@@ -22,6 +22,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+ApplyMigaration(); // Apply any pending migrations to the database when the application starts.
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -29,3 +31,20 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+
+// This method is used to apply any pending migrations to the
+// database when the application starts.
+void ApplyMigaration()
+{
+
+    using(var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        if(dbContext.Database.GetPendingMigrations().Any())
+        {
+            dbContext.Database.Migrate();
+        }
+    }
+}
