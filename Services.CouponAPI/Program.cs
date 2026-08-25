@@ -1,9 +1,17 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Services.CouponAPI;
 using Services.CouponAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();   
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

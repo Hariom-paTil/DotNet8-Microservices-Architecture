@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.CouponAPI.Data;
 using Services.CouponAPI.Models;
@@ -11,6 +12,8 @@ namespace Services.CouponAPI.Controllers
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _dbContext;
+
+        private readonly IMapper _mapper;
 
 
 
@@ -30,9 +33,10 @@ namespace Services.CouponAPI.Controllers
         // Frontend will check IsSuccess property to know whether the request is successful or not.
 
         private readonly CouponResponceDto _response;
-        public CouponAPIController(AppDbContext db)
+        public CouponAPIController(AppDbContext db, IMapper mapper)
         {
             _dbContext = db;
+            _mapper = mapper;
             _response = new CouponResponceDto();
 
         }
@@ -44,8 +48,8 @@ namespace Services.CouponAPI.Controllers
             try
             {
                 IEnumerable<Coupon> objCoupon = _dbContext.Coupons.ToList();
-                _response.Result= objCoupon;
-               
+                _response.Result= _mapper.Map<IEnumerable<CouponDto>>(objCoupon);
+
             }
             catch (Exception ex)
             {
@@ -64,7 +68,7 @@ namespace Services.CouponAPI.Controllers
             try
             {
                 Coupon objCoupon = _dbContext.Coupons.First(c => c.CouponId == id);
-               _response.Result = objCoupon;
+               _response.Result = _mapper.Map<CouponDto>(objCoupon);    
             }
             catch (Exception ex)
             {
