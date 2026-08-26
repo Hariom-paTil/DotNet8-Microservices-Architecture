@@ -79,7 +79,7 @@ namespace Services.CouponAPI.Controllers
             return _response;
         }
         [HttpGet]
-        [Route("GetById/{Code}")]
+        [Route("GetByCode/{Code}")]
         public CouponResponceDto Get(string code)
         {
             try
