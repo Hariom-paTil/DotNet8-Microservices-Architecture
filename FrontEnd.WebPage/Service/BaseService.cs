@@ -22,7 +22,7 @@ namespace FrontEnd.WebPage.Service
             message.Headers.Add("Accept", "application/json");
 
 
-
+            Console.WriteLine(requestDto.Url);
             message.RequestUri = new Uri(requestDto.Url);
             if(requestDto.Data != null)
             {
