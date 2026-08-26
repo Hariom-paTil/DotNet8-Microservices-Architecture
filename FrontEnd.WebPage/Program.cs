@@ -10,11 +10,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
 builder.Services.AddHttpClient<ICouponService, CouponService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IBaseService, BaseService>();
 var app = builder.Build();
 
 
-builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.AddScoped<IBaseService, BaseService>();
+
 SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

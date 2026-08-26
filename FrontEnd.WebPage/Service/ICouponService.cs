@@ -11,7 +11,7 @@ namespace FrontEnd.WebPage.Service
 
         Task<ResponseDto> CreateCouponAsync(CouponDto couponDto);
 
-        Task<ResponseDto> UpdateCouponAsync(CouponDto couponDto);\
+        Task<ResponseDto> UpdateCouponAsync(CouponDto couponDto);
 
         Task<ResponseDto> DeleteCouponAsync(int couponId);
 
