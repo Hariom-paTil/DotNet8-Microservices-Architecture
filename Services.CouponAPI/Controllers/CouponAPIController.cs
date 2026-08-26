@@ -131,7 +131,7 @@ namespace Services.CouponAPI.Controllers
             return _response;
         }
         [HttpDelete]
-        
+        [Route("{id:int}")]
         public CouponResponceDto Delete(int id)
         {
             try
