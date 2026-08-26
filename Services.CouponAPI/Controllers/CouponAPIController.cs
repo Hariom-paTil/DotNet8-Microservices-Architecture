@@ -78,5 +78,75 @@ namespace Services.CouponAPI.Controllers
 
             return _response;
         }
+        [HttpGet]
+        [Route("GetById/{Code}")]
+        public CouponResponceDto Get(string code)
+        {
+            try
+            {
+                Coupon objCoupon = _dbContext.Coupons.First(c => c.CouponCode.ToLower() == code.ToLower());
+                _response.Result = _mapper.Map<CouponDto>(objCoupon);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public CouponResponceDto Post([FromBody] CouponDto coupondto)
+        {
+            try
+            {
+                var objCoupon = _mapper.Map<Coupon>(coupondto);
+                _dbContext.Add(objCoupon);
+                _dbContext.SaveChanges();
+                _response.Result = objCoupon;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+        [HttpPut]
+        public CouponResponceDto Update([FromBody] CouponDto coupondto)
+        {
+            try
+            {
+                var objCoupon = _mapper.Map<Coupon>(coupondto);
+                _dbContext.Update(objCoupon);
+                _dbContext.SaveChanges();
+                _response.Result = objCoupon;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+        [HttpDelete]
+        
+        public CouponResponceDto Delete(int id)
+        {
+            try
+            {
+                var objCoupon = _dbContext.Coupons.First(u => u.CouponId == id);
+                _dbContext.Remove(objCoupon);
+                _dbContext.SaveChanges();
+                
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
     }
 }
