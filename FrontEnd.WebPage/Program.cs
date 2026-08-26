@@ -1,10 +1,21 @@
+using FrontEnd.WebPage.Service;
+using FrontEnd.WebPage.Service.IService;
+using FrontEnd.WebPage.Utility;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 
+builder.Services.AddHttpClient<ICouponService, CouponService>();
 var app = builder.Build();
 
+
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IBaseService, BaseService>();
+SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
