@@ -1,6 +1,6 @@
 ﻿@using FrontEnd.WebPage.Service
 @model CouponDto
-<form>
+<form asp-action="CouponCreate">
     <br />
     <div class="container border p-3">
         <h1 class="text-white text-center">Create Coupon</h1>
@@ -45,8 +45,8 @@
     </div>
 </form>
 
-@section scripts{
+@section Scripts{
 
-         < partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 
 }

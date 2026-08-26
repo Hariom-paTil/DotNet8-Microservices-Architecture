@@ -26,5 +26,19 @@ namespace FrontEnd.WebPage.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CouponCreate(CouponDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _couponService.CreateCouponAsync(model);
+                if (response != null && response.IsSuccess)
+                {
+                    return RedirectToAction(nameof(CouponIndex));
+                }
+            }
+            return View(model);
+        }
     }
 }
