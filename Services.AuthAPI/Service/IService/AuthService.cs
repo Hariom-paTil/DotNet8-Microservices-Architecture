@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 using Services.AuthAPI.Data;
 using Services.AuthAPI.Model;
 using Services.AuthAPI.Model.DTO;
@@ -25,9 +27,44 @@ namespace Services.AuthAPI.Service.IService
             throw new NotImplementedException();
         }
 
-        public Task<UserDTO> Register(RegisterationRequestDTO registerDto)
+        public async Task<UserDTO> Register(RegisterationRequestDTO registerDto)
         {
-            throw new NotImplementedException();
+            ApplicationUser user = new ApplicationUser()
+            {
+                UserName = registerDto.Email,
+                Email = registerDto.Email,
+                NormalizedEmail = registerDto.Email.ToUpper(),
+                name = registerDto.Name,
+                PhoneNumber = registerDto.PhoneNumber
+
+            };
+            try
+            {
+             
+                var result = await _userManager.CreateAsync(user, registerDto.Password);
+                if(result.Succeeded)
+                {
+                    var userToReturn =  _appDbContext.ApplicationUsers.First(u => u.UserName == registerDto.Email);
+
+                    UserDTO userDTO = new UserDTO()
+                    {
+                        Id = userToReturn.Id,
+                        Name = userToReturn.name,
+                        Email = userToReturn.Email,
+                        PhoneNumber = userToReturn.PhoneNumber
+                    };
+
+                    return userDTO;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return new UserDTO();
+          
         }
     }
 }
