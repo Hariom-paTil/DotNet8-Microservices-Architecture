@@ -9,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+// This helps to configure the Identity system with the specified user and role types.
+//simple word it is inbuil way to authenticate and authorize the user in the application.
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>() 
     .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 
