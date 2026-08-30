@@ -29,6 +29,23 @@ namespace Services.AuthAPI.Service.IService
             _roleManager = roleManager;
         }
 
+        public async Task<bool> AssignRole(string email, string roleName)
+        {
+            var user = _appDbContext.ApplicationUsers.FirstOrDefault(u => u.Email.ToUpper() == email.ToUpper());
+            if (user != null)
+            {
+                if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+                {
+                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+
+                }
+                await _userManager.AddToRoleAsync(user, roleName);
+                return true;
+            }
+            return false;
+
+        }
+
         public async Task<LoginResponceDto> Login(LoginRequestDto loginDto)
         {
             var user = _appDbContext.ApplicationUsers.FirstOrDefault(u => u.UserName == loginDto.UserName);

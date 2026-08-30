@@ -49,5 +49,19 @@ namespace Services.AuthAPI.Controllers
             _response.Result = loginResponse;
             return Ok(_response);
         }
+
+
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole([FromBody] RegisterationRequestDTO model)
+        {
+            var roleAssign = await _authService.AssignRole(model.Email,model.Role.ToUpper());
+            if (!roleAssign)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error Encounter";
+                return BadRequest(_response);
+            }
+            return Ok(_response);
+        }
     }
 }

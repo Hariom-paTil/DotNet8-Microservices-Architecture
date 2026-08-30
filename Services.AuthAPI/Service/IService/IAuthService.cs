@@ -6,5 +6,7 @@ namespace Services.AuthAPI.Service.IService
     {
         Task<string> RegisterAsync(RegisterationRequestDTO registerDto);
         Task<LoginResponceDto> Login(LoginRequestDto loginDto);
+
+        Task<bool> AssignRole(string email, string roleName);
     }
 }
