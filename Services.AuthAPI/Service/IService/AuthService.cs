@@ -16,8 +16,14 @@ namespace Services.AuthAPI.Service.IService
 
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthService(AppDbContext appDbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+
+        public AuthService(IJwtTokenGenerator jwtTokenGenerator,
+            AppDbContext appDbContext,
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager)
         {
+            _jwtTokenGenerator = jwtTokenGenerator;
             _appDbContext = appDbContext;
             _userManager = userManager;
             _roleManager = roleManager;
@@ -36,6 +42,9 @@ namespace Services.AuthAPI.Service.IService
                     Token = null
                 };
             }
+
+            var token = _jwtTokenGenerator.GenerateToken(user);
+
             UserDTO userDTO = new UserDTO()
             {
                 Id = user.Id,
@@ -46,8 +55,8 @@ namespace Services.AuthAPI.Service.IService
 
             LoginResponceDto loginResponce = new LoginResponceDto()
             {
-                User=userDTO,
-                Token = "Token" // Placeholder
+                User = userDTO,
+                Token = token
             };
 
             return loginResponce;
