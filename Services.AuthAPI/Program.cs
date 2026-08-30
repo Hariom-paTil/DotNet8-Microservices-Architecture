@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Services.AuthAPI.Data;
 using Services.AuthAPI.Model;
+using Services.AuthAPI.Service;
 using Services.AuthAPI.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +15,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 // This helps to configure the Identity system with the specified user and role types.
 //simple word it is inbuil way to authenticate and authorize the user in the application.
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>() 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+
     .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 
 builder.Services.AddControllers();
