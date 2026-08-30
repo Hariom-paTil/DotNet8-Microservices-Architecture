@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Validations;
 using Services.AuthAPI.Data;
 using Services.AuthAPI.Model;
 using Services.AuthAPI.Model.DTO;
+using System.Security.Cryptography.Xml;
 
 namespace Services.AuthAPI.Service.IService
 {
@@ -22,10 +23,37 @@ namespace Services.AuthAPI.Service.IService
             _roleManager = roleManager;
         }
 
-        public Task<LoginRequestDto> Login(LoginRequestDto loginDto)
+        public async Task<LoginResponceDto> Login(LoginRequestDto loginDto)
         {
-            throw new NotImplementedException();
+            var user = _appDbContext.ApplicationUsers.FirstOrDefault(u => u.UserName == loginDto.UserName);
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (user == null || !isValid)
+            {
+                return new LoginResponceDto
+                {
+                    User = null,
+                    Token = null
+                };
+            }
+            UserDTO userDTO = new UserDTO()
+            {
+                Id = user.Id,
+                Name = user.name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            LoginResponceDto loginResponce = new LoginResponceDto()
+            {
+                User=userDTO,
+                Token = "Token" // Placeholder
+            };
+
+            return loginResponce;
         }
+
+          
 
         public async Task<string> RegisterAsync(RegisterationRequestDTO registerDto)
         {

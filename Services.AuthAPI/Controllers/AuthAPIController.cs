@@ -36,9 +36,18 @@ namespace Services.AuthAPI.Controllers
 
         }
         [HttpPost("login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginDto)
         {
-            return Ok("User logged in successfully.");
+            var loginResponse = await _authService.Login(loginDto);
+            if (loginResponse == null || loginResponse.User == null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Invalid username or password.";
+                return BadRequest(_response);
+            }
+            _response.IsSuccess = true;
+            _response.Result = loginResponse;
+            return Ok(_response);
         }
     }
 }
