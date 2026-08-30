@@ -27,7 +27,7 @@ namespace Services.AuthAPI.Service.IService
             throw new NotImplementedException();
         }
 
-        public async Task<UserDTO> Register(RegisterationRequestDTO registerDto)
+        public async Task<string> RegisterAsync(RegisterationRequestDTO registerDto)
         {
             ApplicationUser user = new ApplicationUser()
             {
@@ -54,7 +54,11 @@ namespace Services.AuthAPI.Service.IService
                         PhoneNumber = userToReturn.PhoneNumber
                     };
 
-                    return userDTO;
+                    return "";
+                }
+                else
+                {
+                    return result.Errors.FirstOrDefault().Description;
                 }
             }
 
@@ -63,8 +67,8 @@ namespace Services.AuthAPI.Service.IService
                 throw new Exception(ex.Message);
             }
 
-            return new UserDTO();
-          
+            return "Error occurred during registration.";
+
         }
     }
 }

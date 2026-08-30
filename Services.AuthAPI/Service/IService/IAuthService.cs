@@ -4,7 +4,7 @@ namespace Services.AuthAPI.Service.IService
 {
     public interface IAuthService
     {
-        Task<UserDTO> Register(RegisterationRequestDTO registerDto);
+        Task<string> RegisterAsync(RegisterationRequestDTO registerDto);
         Task<LoginRequestDto> Login(LoginRequestDto loginDto);
     }
 }
