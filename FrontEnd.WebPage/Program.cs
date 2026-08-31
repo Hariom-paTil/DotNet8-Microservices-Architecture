@@ -1,4 +1,5 @@
 using FrontEnd.WebPage.Service;
+using FrontEnd.WebPage.Service.Auth;
 using FrontEnd.WebPage.Service.IService;
 using FrontEnd.WebPage.Utility;
 
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IBaseService, BaseService>();

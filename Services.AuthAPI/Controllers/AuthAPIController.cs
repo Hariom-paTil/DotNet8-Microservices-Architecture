@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Services.AuthAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthAPIController : ControllerBase
     {
