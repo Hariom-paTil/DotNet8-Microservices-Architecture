@@ -13,10 +13,11 @@ namespace FrontEnd.WebPage.Controllers
             return View(loginRequestDto);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            RegisterationRequestDTO registerationRequestDTO = new RegisterationRequestDTO();
+            return View(registerationRequestDTO);
         }
 
         public IActionResult Logout()
