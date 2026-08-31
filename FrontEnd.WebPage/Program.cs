@@ -17,6 +17,8 @@ var app = builder.Build();
 
 
 SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
+
+SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
