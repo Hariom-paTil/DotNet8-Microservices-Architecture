@@ -3,6 +3,7 @@ using FrontEnd.WebPage.Service.Auth;
 using FrontEnd.WebPage.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -24,6 +25,28 @@ namespace FrontEnd.WebPage.Controllers
         {
             LoginRequestDto loginRequestDto = new LoginRequestDto();
             return View(loginRequestDto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginRequestDto loginRequestDto)
+        {
+            ResponseDto responseDto = await _authService.LoginAsync(loginRequestDto);
+           
+            if (responseDto != null && responseDto.IsSuccess)
+            {
+                // This Line store Converted Object to LoginResponceDto 
+                //
+                LoginResponceDto loginResponceDto = JsonConvert.DeserializeObject<LoginResponceDto>(Convert.ToString(responseDto.Result));
+                
+                return RedirectToAction("Index", "Home");
+
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", responseDto.Message);
+                return View(loginRequestDto);
+            }
+            
+         
         }
 
         [HttpGet]
