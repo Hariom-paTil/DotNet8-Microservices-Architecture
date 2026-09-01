@@ -1,4 +1,5 @@
-﻿@model RegisterationRequestDTO
+﻿```cshtml
+@model RegisterationRequestDTO
 
 <form method="post">
     <div class="container border p-4">
@@ -30,8 +31,15 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <select asp-for="Role" class="form-select" asp-items="@(ViewBag.RoleList as IEnumerable<SelectListItem>)">
+                    <option value="" selected>--Select Role--</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+
                 <button type="submit" class="form-control btn btn-success" value="Submit">Register</button>
             </div>
         </div>
     </div>
 </form>
+```
