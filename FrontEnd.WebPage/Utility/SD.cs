@@ -22,9 +22,11 @@
         // Simply set the value of CouponAPIBase to the base URL of the Coupon API, and it can be used in various parts of the application to make API calls.
         public static string CouponAPIBase { get; set; } 
         public static string AuthAPIBase { get; set; }
-        public static string RoleAdmin = "ADMIN";
+        public const string RoleAdmin = "ADMIN";
 
-        public static string RoleCustomer = "CUSTOMER";
+        public const string RoleCustomer = "CUSTOMER";
+
+        public const string JWTToken = "JWTToken";
         public enum ApiType
         {
             GET,

@@ -1,14 +1,19 @@
 using FrontEnd.WebPage.Service;
 using FrontEnd.WebPage.Service.Auth;
 using FrontEnd.WebPage.Service.IService;
+using FrontEnd.WebPage.Service.TokenProviderService;
 using FrontEnd.WebPage.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 //builder.Services.AddHttpClient<IAuthService, AuthService>();
