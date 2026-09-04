@@ -104,9 +104,11 @@ namespace FrontEnd.WebPage.Controllers
         }
 
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+            _tokenProvider.ClearToken();
+            return RedirectToAction("Index","Home");
         }
 
         private async Task LoginUser(LoginResponceDto model)
