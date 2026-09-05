@@ -15,7 +15,7 @@ namespace Services.AuthAPI.Service
         {
             _jwtOptions = jwtOptions.Value;
         }
-        public string GenerateToken(ApplicationUser applicationUser)
+        public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtOptions.SecretKey);
@@ -25,17 +25,20 @@ namespace Services.AuthAPI.Service
             // In this case, we are adding the user's email, id, and username as claims in the token.
             // this information can be used by the application to identify the user and authorize access to resources.
 
-            var claims = new  List<Claim>
+            var claimsList   = new  List<Claim>
             {
                     new Claim(JwtRegisteredClaimNames.Email,applicationUser.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id),
                     new Claim(JwtRegisteredClaimNames.Name, applicationUser.UserName),
             };
+
+            claimsList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Audience=_jwtOptions.Audience,
                 Issuer=_jwtOptions.Issuer,
-                Subject = new ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(claimsList),
                 Expires = DateTime.UtcNow.AddDays(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 

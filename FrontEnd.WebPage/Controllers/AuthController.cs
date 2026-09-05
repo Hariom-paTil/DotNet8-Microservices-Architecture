@@ -142,6 +142,11 @@ namespace FrontEnd.WebPage.Controllers
             identity.AddClaim(new Claim(ClaimTypes.Name,
      jwt.Claims.FirstOrDefault(c => c.Type == Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Email).Value));
 
+
+            // Take the user's role from the JWT token and tell ASP.NET Core that this is the user's role.
+            identity.AddClaim(new Claim(ClaimTypes.Role,
+     jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value));
+
             var principal = new ClaimsPrincipal(identity);
 
             //SignInAsync()	This is the actual "login" trigger. It takes the digital wallet,
