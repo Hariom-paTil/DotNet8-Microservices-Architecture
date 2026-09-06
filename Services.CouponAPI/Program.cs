@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.CouponAPI;
 using Services.CouponAPI.Data;
+using Services.CouponAPI.Extension;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,11 +18,7 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-var settingSection = builder.Configuration.GetSection("ApiSettings");
 
-var secret= settingSection.GetValue<string>("SecretKey");
-var issurer= settingSection.GetValue<string>("Issuer");
-var audience= settingSection.GetValue<string>("Audience");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -65,28 +62,8 @@ builder.Services.AddSwaggerGen(option=> {
 
 
 
-// This code configures JWT authentication for the application.
-// It retrieves the secret key, issuer, and audience from the configuration settings and sets up the authentication scheme to use JWT Bearer tokens.
-// The token validation parameters are defined to ensure that the tokens are valid, including checking the signing key, issuer, and audience.
-var key = Encoding.ASCII.GetBytes(secret);
 
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = issurer,
-        ValidateAudience = true,
-        ValidAudience = audience
-    };
-});
+builder.AddAppAuthentication(); // This is the extension method which is defined in the WebApplicationBuilderExtension.cs file. It will add the JWT authentication to the application.
 
 builder.Services.AddAuthorization();
 
