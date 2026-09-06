@@ -4,25 +4,33 @@ using System.Text;
 using Newtonsoft.Json;
 using static FrontEnd.WebPage.Utility.SD;
 using System.Net;
+using FrontEnd.WebPage.Service.TokenProviderService;
 
 namespace FrontEnd.WebPage.Service
 {
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClient;
-
-        public BaseService(IHttpClientFactory httpClient)
+        private readonly ITokenProvider _tokenProvider;
+        public BaseService(IHttpClientFactory httpClient, ITokenProvider tokenProvider)
         {
             _httpClient = httpClient;
+            _tokenProvider = tokenProvider;
         }
-        public async Task<ResponseDto> SendAsync(RequestDto requestDto)
+        public async Task<ResponseDto> SendAsync(RequestDto requestDto, bool withBearerToken)
         {
             HttpClient client = _httpClient.CreateClient("HttpAPI");
             HttpRequestMessage message = new();
             message.Headers.Add("Accept", "application/json");
+            if (withBearerToken)
+            {
+                var token =  _tokenProvider.GetToken();
+                message.Headers.Add("Authorization", $"Bearer {token}");
+
+            }
 
 
-            Console.WriteLine(requestDto.Url);
+            
             message.RequestUri = new Uri(requestDto.Url);
             if(requestDto.Data != null)
             {
