@@ -1,7 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Services.CouponAPI;
 using Services.CouponAPI.Data;
 using System.Text;
@@ -15,9 +17,11 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-var secret= builder.Configuration.GetValue<string>("ApiSettings:SecretKey");
-var issurer= builder.Configuration.GetValue<string>("ApiSettings:Issuer");
-var audience= builder.Configuration.GetValue<string>("ApiSettings:Audience");
+var settingSection = builder.Configuration.GetSection("ApiSettings");
+
+var secret= settingSection.GetValue<string>("SecretKey");
+var issurer= settingSection.GetValue<string>("Issuer");
+var audience= settingSection.GetValue<string>("Audience");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -25,7 +29,39 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Its used when you want to add authorization in your swagger UI. It will add a lock button in the swagger
+// UI which will allow you to enter the JWT token and authorize the requests.
+// This code configures Swagger to include a security definition for JWT Bearer tokens, allowing users to enter their JWT token in the Swagger UI for authorized requests.
+// So you can test your API endpoints that require authentication directly from the Swagger UI by providing a valid JWT token.
+builder.Services.AddSwaggerGen(option=> {
+
+    option.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        In = ParameterLocation.Header,
+        Scheme = "Bearer",
+        Description="Enter the following JWT token in the format: Bearer {your token}"
+    });
+
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            new string[]{}
+        }
+    });
+
+});
+   
 
 
 
@@ -53,20 +89,6 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddAuthorization();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var app = builder.Build();
 
