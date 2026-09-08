@@ -2,73 +2,73 @@
 using FrontEnd.WebPage.Service.IService;
 using static FrontEnd.WebPage.Utility.SD;
 
-namespace FrontEnd.WebPage.Service
-{
-    public class CouponService : ICouponService
+namespace FrontEnd.WebPage.Service.Product_Services
+{ 
+    public class ProductService : IProductService
     {
         private readonly IBaseService _baseService;
 
-        public CouponService(IBaseService baseService)
+        public ProductService(IBaseService baseService)
         {
             _baseService = baseService;
         }
 
-        public async Task<ResponseDto> CreateCouponAsync(CouponDto couponDto)
+        public async Task<ResponseDto> CreateProductAsync(ProductDto productDto)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.POST,
-                Url = CouponAPIBase + "/api/coupon",
-                Data = couponDto
+                Url = ProductAPIBase + "/api/product",
+                Data = productDto
             });
         }
 
-        public async Task<ResponseDto> DeleteCouponAsync(int couponId)
+        public async Task<ResponseDto> DeleteProductAsync(int productId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.DELETE,
-                Url = CouponAPIBase + "/api/coupon/" + couponId
+                Url = ProductAPIBase + "/api/product/" + productId
             });
         }
 
-        public async Task<ResponseDto> GetAllCouponsAsync()
+        public async Task<ResponseDto> GetAllProductAsync()
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.GET,
-                Url = CouponAPIBase + "/api/coupon",
+                Url = ProductAPIBase + "/api/product",
             });
 
         }
 
-        public async Task<ResponseDto> GetCouponsAsync(string couponId)
+        public async Task<ResponseDto> GetProductAsync(string productId)
         {
            
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.GET,
-                Url = CouponAPIBase + "/api/coupon/GetByCode/" + couponId
+                Url = ProductAPIBase + "/api/product/GetByCode/" + productId
             });
         }
 
-        public async Task<ResponseDto> GetCouponsByIdAsync(int couponId)
+        public async Task<ResponseDto> GetProductByIdAsync(int productId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.GET,
-                Url = CouponAPIBase + "/api/coupon/" + couponId
+                Url = ProductAPIBase + "/api/product/" + productId
             });
 
         }
 
-        public Task<ResponseDto> UpdateCouponAsync(CouponDto couponDto)
+        public Task<ResponseDto> UpdateProductAsync(ProductDto productDto)
         {
            return _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.PUT,
-                Url = CouponAPIBase + "/api/coupon",
-                Data = couponDto
+                Url = ProductAPIBase + "/api/product",
+                Data = productDto
             });
         }
     }

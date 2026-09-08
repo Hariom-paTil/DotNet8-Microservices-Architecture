@@ -1,6 +1,7 @@
-using FrontEnd.WebPage.Service;
 using FrontEnd.WebPage.Service.Auth;
+using FrontEnd.WebPage.Service.Coupon_Services;
 using FrontEnd.WebPage.Service.IService;
+using FrontEnd.WebPage.Service.Product_Services;
 using FrontEnd.WebPage.Service.TokenProviderService;
 using FrontEnd.WebPage.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -37,6 +39,8 @@ var app = builder.Build();
 SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 
 SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
+
+SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

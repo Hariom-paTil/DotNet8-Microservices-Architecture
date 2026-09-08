@@ -1,12 +1,11 @@
 ﻿using FrontEnd.WebPage.Models;
-using FrontEnd.WebPage.Service.IService;
 using System.Text;
 using Newtonsoft.Json;
 using static FrontEnd.WebPage.Utility.SD;
 using System.Net;
 using FrontEnd.WebPage.Service.TokenProviderService;
 
-namespace FrontEnd.WebPage.Service
+namespace FrontEnd.WebPage.Service.IService
 {
     public class BaseService : IBaseService
     {

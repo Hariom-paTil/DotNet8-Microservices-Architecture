@@ -1,6 +1,6 @@
 ﻿using FrontEnd.WebPage.Models;
 
-namespace FrontEnd.WebPage.Service
+namespace FrontEnd.WebPage.Service.Coupon_Services
 {
     public interface ICouponService
     {

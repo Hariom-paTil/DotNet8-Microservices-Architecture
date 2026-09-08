@@ -1,4 +1,4 @@
-﻿using FrontEnd.WebPage.Service;
+﻿using FrontEnd.WebPage.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
