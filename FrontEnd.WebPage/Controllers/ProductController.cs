@@ -65,5 +65,30 @@ namespace FrontEnd.WebPage.Controllers
             }
             return View(productDto);
         }
+
+
+        public async Task<IActionResult> ProductEdit(int productId)
+        {
+
+            var response = await _productService.GetProductByIdAsync(productId);
+            if (response != null && response.IsSuccess)
+            {
+                ProductDto? model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                return View(model);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProductEdit(ProductDto productDto)
+        {
+
+            var response = await _productService.UpdateProductAsync(productDto);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(ProductIndex));
+            }
+            return View(productDto);
+        }
     }
 }
