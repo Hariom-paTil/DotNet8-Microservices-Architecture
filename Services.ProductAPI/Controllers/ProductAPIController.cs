@@ -68,7 +68,7 @@ namespace Services.CouponAPI.Controllers
         
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ResponceDto Post([FromBody] ProductDto productdto)
         {
             try
@@ -86,7 +86,7 @@ namespace Services.CouponAPI.Controllers
             return _response;
         }
         [HttpPut]
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ResponceDto Update([FromBody] ProductDto productdto)
         {
             try
@@ -105,7 +105,7 @@ namespace Services.CouponAPI.Controllers
         }
         [HttpDelete]
         [Route("{id:int}")]
-       // [Authorize(Roles = "Admin")] 
+        [Authorize(Roles = "Admin")] 
         public ResponceDto Delete(int id)
         {
             try

@@ -1,5 +1,7 @@
 using FrontEnd.WebPage.Models;
+using FrontEnd.WebPage.Service.Product_Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace FrontEnd.WebPage.Controllers
@@ -8,14 +10,27 @@ namespace FrontEnd.WebPage.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private readonly IProductService _productService;
+
+        public HomeController(IProductService productService)
+        {
+            _productService = productService;
+        }
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+
+            List<ProductDto> list = new();
+            var response = await _productService.GetAllProductAsync();
+            if (response != null && response.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+            }
+            return View(list);
         }
 
         public IActionResult Privacy()
