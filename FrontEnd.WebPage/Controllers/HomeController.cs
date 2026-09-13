@@ -35,7 +35,7 @@ namespace FrontEnd.WebPage.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Details(int productId)
+        public async Task<IActionResult> ProductDetails(int productId)
         {
 
             ProductDto result = new();
