@@ -6,6 +6,6 @@ namespace Services.ShoppingCartAPI.Models.Dto
     {
         public CartHeaderDto CartHeader { get; set; }
 
-        public IEnumerable<CartDetailsDto> CartDetails { get; set;
-        }
+        public IEnumerable<CartDetailsDto> CartDetails { get; set; }
+    }
 }
