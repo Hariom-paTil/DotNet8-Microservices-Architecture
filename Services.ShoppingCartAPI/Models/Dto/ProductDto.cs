@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Services.ShoppingCartAPI.Model.DTO
+namespace Services.ShoppingCartAPI.Models.Dto
 {
     public class ProductDto
     {
