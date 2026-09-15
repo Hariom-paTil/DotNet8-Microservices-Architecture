@@ -1,8 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.ProductAPI;
 using Services.ProductAPI.Data;
@@ -93,7 +91,7 @@ app.Run();
 void ApplyMigaration()
 {
 
-    using (var scope = app.Services.CreateScope())
+    using(var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         if (dbContext.Database.GetPendingMigrations().Any())
