@@ -1,4 +1,4 @@
-﻿using Services.ShoppingCartAPI.Model.DTO;
+﻿using Services.ShoppingCartAPI.Models.Dto;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,8 +21,6 @@ namespace Services.ShoppingCartAPI.Models
         [NotMapped]
         public double CartTotal { get; set; }
 
-        public ProductDto Product { get; set; }
-
-        public int Count { get; set; }
+    
     }
 }
