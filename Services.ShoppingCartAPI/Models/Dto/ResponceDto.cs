@@ -1,6 +1,6 @@
 ﻿namespace Services.ShoppingCartAPI.Models.DTO
 {
-    public class CouponResponceDto
+    public class ResponceDto
     {
         public object? Result { get; set; }
 
